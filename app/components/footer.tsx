@@ -1,6 +1,8 @@
+import Link from 'next/link'
+
 const navigation = {
     company: [
-      { name: 'About', href: '#' }
+      { name: 'About', href: '/about' }
     ],
     legal: [
       { name: 'Terms of service', href: '#' },
@@ -48,12 +50,12 @@ const navigation = {
                   <ul role="list" className="mt-6 space-y-4">
                     {navigation.legal.map((item) => (
                       <li key={item.name}>
-                        <a
+                        <Link
                           href={item.href}
                           className="text-sm/6 text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white"
                         >
                           {item.name}
-                        </a>
+                        </Link>
                       </li>
                     ))}
                   </ul>
