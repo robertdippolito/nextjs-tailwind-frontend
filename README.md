@@ -19,8 +19,12 @@ Videos related to this repository can be found here:
 ## 🔥 Getting Started
 
 To run the frontend locally, clone this repo and run the following commands:
-npm install
-npm run dev
+
+`npm install`
+
+`npm run dev`
+
+once the application is running locally you should be able to access it via your browser on the default port (3000).
 
 ## 📃 License 
 As much as possible I'd like to encourage participation and collaboration. This code is open-source software licensed under [Apache 2.0 License](https://github.com/gowebly/gowebly/blob/main/LICENSE), created and supported by [Robert D'Ippolito](https://robertdippolito.me) for people and robots.
