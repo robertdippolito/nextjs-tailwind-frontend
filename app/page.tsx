@@ -1,4 +1,4 @@
-export default function Example() {
+export default function Hero() {
   return (
     <div className="relative isolate overflow-hidden bg-white dark:bg-gray-900">
       <svg
