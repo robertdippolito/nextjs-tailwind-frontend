@@ -39,3 +39,13 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Terraform directories
+.terraform/
+**/.terraform/
+
+# Terraform state files
+*.tfstate
+*.tfstate.backup
+*.backup
+*.tfbackend
