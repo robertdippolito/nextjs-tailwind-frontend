@@ -24,6 +24,20 @@ variable "domain_validation_options" {
   }))
 }
 
+variable "validation_domains" {
+  description = "Domains that require ACM validation records."
+  type        = list(string)
+}
+
+variable "domain_validation_records" {
+  description = "Map of domain names to their ACM validation record details."
+  type = map(object({
+    name  = string
+    type  = string
+    value = string
+  }))
+}
+
 variable "certificate_arn" {
   description = "ARN of the ACM certificate to validate."
   type        = string

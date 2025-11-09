@@ -21,6 +21,14 @@ provider "aws" {
 
 locals {
   cloudfront_aliases = distinct(concat([var.domain_name], var.subject_alternative_names))
+  acm_validation_record_map = {
+    for dvo in module.acm.domain_validation_options :
+    dvo.domain_name => {
+      name  = dvo.resource_record_name
+      type  = dvo.resource_record_type
+      value = dvo.resource_record_value
+    }
+  }
 }
 
 module "s3" {
@@ -41,7 +49,7 @@ module "acm" {
 
 module "cloudfront" {
   source = "./modules/cloudfront"
-  name   = "###"
+  name   = "my-cloudfront-distro"
 
   s3_bucket_id          = module.s3.bucket_id
   s3_bucket_arn         = module.s3.bucket_arn
@@ -65,4 +73,7 @@ module "dns" {
   certificate_arn             = module.acm.certificate_arn
   distribution_domain_name    = module.cloudfront.domain_name
   distribution_hosted_zone_id = module.cloudfront.hosted_zone_id
+  validation_domains          = local.cloudfront_aliases
+  domain_validation_records   = local.acm_validation_record_map
+
 }

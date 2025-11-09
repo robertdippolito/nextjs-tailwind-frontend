@@ -9,17 +9,22 @@ terraform {
 
 locals {
   alias_record_names = toset(concat([var.domain_name], var.additional_alias_names))
+
+  validation_records = {
+    for domain in var.validation_domains :
+    domain => lookup(var.domain_validation_records, domain, null)
+  }
 }
 
 resource "aws_route53_record" "validation" {
   for_each = {
-    for dvo in var.domain_validation_options :
-    dvo.domain_name => dvo
+    for domain, record in local.validation_records : domain => record
+    if record != null
   }
 
-  name    = each.value.resource_record_name
-  type    = each.value.resource_record_type
-  records = [each.value.resource_record_value]
+  name    = each.value.name
+  type    = each.value.type
+  records = [each.value.value]
   ttl     = var.validation_record_ttl
   zone_id = var.hosted_zone_id
   allow_overwrite = true

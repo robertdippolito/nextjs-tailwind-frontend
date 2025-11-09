@@ -11,7 +11,6 @@ resource "aws_cloudfront_distribution" "this" {
   comment             = var.comment
   default_root_object = var.default_root_object
   price_class         = var.price_class
-  is_ipv6_enabled     = var.is_ipv6_enabled
   aliases             = var.aliases
 
   origin {
