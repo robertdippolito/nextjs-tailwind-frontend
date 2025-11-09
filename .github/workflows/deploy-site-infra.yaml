@@ -1,0 +1,48 @@
+name: Deploy Website Infrastructure
+
+defaults:
+  run:
+    working-directory: ./_infra/terraform
+
+on:
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    name: Deploy Website Infrastructure
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-access-key-id:     ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region:            ${{ secrets.AWS_REGION }}
+      
+      - name: Set up Terraform
+        uses: hashicorp/setup-terraform@v2
+        with:
+          terraform_version: '1.5.0'
+
+      - name: Restore terraform.tfvars
+        run: |
+          echo "$TFVARS_B64" | base64 --decode > terraform.tfvars
+        env:
+          TFVARS_B64: ${{ secrets.TFVARS_B64 }}
+
+      - name: Restore backend-config.tfbackend
+        run: echo "$TFBACKEND_B64" | base64 --decode > backend-config.tfbackend
+        env:
+          TFBACKEND_B64: ${{ secrets.TFBACKEND_B64 }}
+
+      - name: Terraform Init
+        run: |
+          terraform init -backend-config=backend-config.tfbackend -input=false
+
+      - name: Apply Website Infrastructure
+        run: |
+          terraform apply -auto-approve -input=false
